@@ -1,0 +1,44 @@
+/* Style général pour le tableau */
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 1em;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Style pour les en-têtes du tableau */
+.styled-table thead tr {
+  background-color: #009879;
+  color: #ffffff;
+  text-align: left;
+}
+
+/* Style pour les cellules du tableau */
+.styled-table th,
+.styled-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #dddddd;
+}
+
+/* Style pour les lignes paires */
+.styled-table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+/* Hover effect sur les lignes */
+.styled-table tbody tr:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+
+.set-togreen{
+ color: #8914ff;
+
+}
+
+
+
+

@@ -1,0 +1,89 @@
+<h1>Liste des agent</h1>
+
+
+<table class="styled-table">
+  <thead>
+  <tr>
+    <td>
+      Matricule
+    </td>
+    <td>
+      Nom
+    </td>
+    <td>
+      Prenom
+    </td>
+  </tr>
+  </thead>
+  <tbody>
+<!--
+  <tr *ngFor="let agent of agents">
+    <div [ngClass]="{'set-togreen': agent.actif}">
+      <td [ngStyle]="{'font-size': agent.indice+ 'px'}">
+        {{ agent.matricule }}
+      </td>
+      <td>
+        {{ agent.nom }}
+      </td>
+      <td>
+        {{ agent.prenom }}
+      </td>
+    </div>
+
+  </tr>
+-->
+    @for (agent of agents; track agent.matricule) {
+      <tr [ngClass]="{'set-togreen': agent.actif}">
+        <td [ngStyle]="{'font-size': agent.indice+ 'px'}">
+          {{ agent.matricule }}
+        </td>
+        <td>
+          {{ agent.nom }}
+        </td>
+        <td>
+          {{ agent.prenom }}
+        </td>
+
+      </tr>
+    }
+
+  </tbody>
+
+</table>
+
+
+<div>
+  <h1> Formulaire d'ajout d'un agent</h1>
+  <form #agentf="ngForm" (ngSubmit)="submitAgent(agentf.value)">
+    <div>
+      <label for="nom">Nom</label>
+      <input type="text" id="nom" name="nom" [(ngModel)]="agentTemplate.nom" #nom="ngModel" required>
+      <span style="color: red" *ngIf="nom.invalid && nom.touched"> Le nom est requis</span>
+<!--      @if (nom.errors['require'])-->
+    </div>
+    <div>
+      <label for="prenom">Prenom</label>
+      <input type="text" id="prenom" name="prenom" [(ngModel)]="agentTemplate.prenom" #prenom="ngModel" required>
+      <span style="color: red" *ngIf="prenom.invalid && prenom.touched"> Le prenom est requis</span>
+    </div>
+    <div>
+      <label for="matricule">matricule</label>
+      <input type="text" id="matricule" name="matricule" [(ngModel)]="agentTemplate.matricule" #matricule="ngModel" required>
+      <span style="color: red" *ngIf="matricule.invalid && matricule.touched"> Le nom est requis</span>
+    </div>
+    <div>
+      <label for="salaireBase">Salaire de base</label>
+      <input type="number" id="salaireBase" name="salaireBase" [(ngModel)]="agentTemplate.salaireBase" #salaireBase="ngModel" min="0" required>
+      <span style="color: red" *ngIf="salaireBase.invalid && salaireBase.touched">
+       <span *ngIf="salaireBase.errors?.['required']" >
+          Le salaireBase est requis
+       </span>
+        <span *ngIf="salaireBase.errors?.['min']" >
+          Le salaireBase doit etre positif
+       </span>
+
+      </span>
+    </div>
+    <button [disabled]="agentf.invalid" type="submit">Soumrttre</button>
+  </form>
+</div>
