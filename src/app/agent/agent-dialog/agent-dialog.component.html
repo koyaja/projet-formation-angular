@@ -1,0 +1,99 @@
+<h2 mat-dialog-title>{{ dialogTitle }}</h2>
+
+<form [formGroup]="agentForm" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <div class="form-container">
+      <!-- Matricule -->
+      <mat-form-field appearance="outline">
+        <mat-label>Matricule</mat-label>
+        <input matInput formControlName="matricule" placeholder="Ex. A001">
+        <mat-error *ngIf="agentForm.get('matricule')?.hasError('required')">
+          Matricule obligatoire
+        </mat-error>
+        <mat-error *ngIf="agentForm.get('matricule')?.hasError('pattern')">
+          Format invalide (lettres majuscules et chiffres uniquement)
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Nom -->
+      <mat-form-field appearance="outline">
+        <mat-label>Nom</mat-label>
+        <input matInput formControlName="nom" placeholder="Ex. Dupont">
+        <mat-error *ngIf="agentForm.get('nom')?.hasError('required')">
+          Nom obligatoire
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Prénom -->
+      <mat-form-field appearance="outline">
+        <mat-label>Prénom</mat-label>
+        <input matInput formControlName="prenom" placeholder="Ex. Jean">
+        <mat-error *ngIf="agentForm.get('prenom')?.hasError('required')">
+          Prénom obligatoire
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Date de naissance -->
+      <mat-form-field appearance="outline">
+        <mat-label>Date de naissance</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="dateNaissance">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <!-- Indice -->
+      <mat-form-field appearance="outline">
+        <mat-label>Indice</mat-label>
+        <input matInput type="number" formControlName="indice" placeholder="Ex. 500">
+        <mat-error *ngIf="agentForm.get('indice')?.hasError('min')">
+          L'indice doit être positif
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Salaire Base -->
+      <mat-form-field appearance="outline">
+        <mat-label>Salaire de base</mat-label>
+        <input matInput type="number" formControlName="salaireBase" placeholder="Ex. 2500">
+        <span matTextSuffix>€</span>
+        <mat-error *ngIf="agentForm.get('salaireBase')?.hasError('required')">
+          Salaire de base obligatoire
+        </mat-error>
+        <mat-error *ngIf="agentForm.get('salaireBase')?.hasError('min')">
+          Le salaire doit être positif
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Actif -->
+      <mat-checkbox formControlName="actif">Agent actif</mat-checkbox>
+
+      <!-- Allocation Familiale -->
+      <mat-form-field appearance="outline">
+        <mat-label>Allocation familiale</mat-label>
+        <input matInput type="number" formControlName="allocationFamiliale" placeholder="Ex. 200">
+        <span matTextSuffix>€</span>
+        <mat-error *ngIf="agentForm.get('allocationFamiliale')?.hasError('min')">
+          L'allocation doit être positive
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Nombre d'enfants -->
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre d'enfants</mat-label>
+        <input matInput type="number" formControlName="nbrEnfant" placeholder="Ex. 2">
+        <mat-error *ngIf="agentForm.get('nbrEnfant')?.hasError('min')">
+          Le nombre d'enfants doit être positif
+        </mat-error>
+        <mat-error *ngIf="agentForm.get('nbrEnfant')?.hasError('pattern')">
+          Doit être un nombre entier
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="onCancel()">Annuler</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="agentForm.invalid">
+      {{ isNewAgent ? 'Ajouter' : 'Enregistrer' }}
+    </button>
+  </mat-dialog-actions>
+</form>
