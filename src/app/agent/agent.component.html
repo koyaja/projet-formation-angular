@@ -1,7 +1,7 @@
 <div class="example-button-row">
-  <button  (click)="openDialog()" mat-flat-button>Ajouter un agent</button>
+  <button (click)="openDialog()" mat-flat-button>Ajouter un agent</button>
 
-<!--  <a mat-flat-button href="https://www.google.com/" target="_blank">Link</a>-->
+  <!--  <a mat-flat-button href="https://www.google.com/" target="_blank">Link</a>-->
 </div>
 
 <mat-form-field>
@@ -13,30 +13,44 @@
 
   <!-- Position Column -->
   <ng-container matColumnDef="nom">
-    <th mat-header-cell *matHeaderCellDef> Nom </th>
-    <td mat-cell *matCellDef="let element"> {{element.nom}} </td>
+    <th mat-header-cell *matHeaderCellDef> Nom</th>
+    <td mat-cell *matCellDef="let element"> {{ element.nom }}</td>
   </ng-container>
 
   <!-- Name Column -->
   <ng-container matColumnDef="prenom">
-    <th mat-header-cell *matHeaderCellDef> Prenom </th>
-    <td mat-cell *matCellDef="let element"> {{element.prenom}} </td>
+    <th mat-header-cell *matHeaderCellDef> Prenom</th>
+    <td mat-cell *matCellDef="let element"> {{ element.prenom }}</td>
   </ng-container>
 
   <!-- Weight Column -->
   <ng-container matColumnDef="matricule">
-    <th mat-header-cell *matHeaderCellDef> Matricule </th>
-    <td mat-cell *matCellDef="let element"> {{element?.matricule}} </td>
+    <th mat-header-cell *matHeaderCellDef> Matricule</th>
+    <td mat-cell *matCellDef="let element"> {{ element?.matricule }}</td>
   </ng-container>
 
   <!-- Symbol Column -->
   <ng-container matColumnDef="salaireBase">
-    <th mat-header-cell *matHeaderCellDef> Salaire de Base </th>
-    <td mat-cell *matCellDef="let element"> {{element.salaireBase}} </td>
+    <th mat-header-cell *matHeaderCellDef> Salaire de Base</th>
+    <td mat-cell *matCellDef="let element"> {{ element.salaireBase }}</td>
   </ng-container>
   <ng-container matColumnDef="etat">
     <th mat-header-cell *matHeaderCellDef> Status</th>
-    <td mat-cell *matCellDef="let element"> {{element.actif}} </td>
+    <td mat-cell *matCellDef="let element"> {{ element.actif }}</td>
+  </ng-container>
+  <ng-container matColumnDef="action">
+    <th mat-header-cell *matHeaderCellDef> Action</th>
+    <td mat-cell *matCellDef="let element">
+      <div class="example-button-container">
+        <button (click)="openDialog(element)" mat-mini-fab aria-label="Example icon button with a menu icon">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button color="accent" (click)="openDialog(element,true)" mat-mini-fab aria-label="Example icon button with a menu icon">
+        <mat-icon>delete</mat-icon>
+      </button>
+      </div>
+
+    </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -44,6 +58,6 @@
 
   <!-- Row shown when there is no matching data. -->
   <tr class="mat-row" *matNoDataRow>
-    <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+    <td class="mat-cell" colspan="4">No data matching the filter "{{ input.value }}"</td>
   </tr>
 </table>

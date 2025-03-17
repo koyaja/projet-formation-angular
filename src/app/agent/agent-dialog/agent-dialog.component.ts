@@ -48,14 +48,19 @@ export class AgentDialogComponent implements OnInit {
   agentForm!: FormGroup;
   dialogTitle: string;
   isNewAgent: boolean;
+  isDeleteAgent: boolean =false;
 
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<AgentDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { agent: Agent; isNew: boolean }
+    @Inject(MAT_DIALOG_DATA) public data: { agent: Agent; isNew: boolean; isDelete: boolean }
   ) {
     this.isNewAgent = data.isNew;
+    this.isDeleteAgent = data.isDelete;
     this.dialogTitle = this.isNewAgent ? 'Ajouter un agent' : 'Modifier un agent';
+    if(this.isDeleteAgent){
+      this.dialogTitle="Are you sure you want to delete this agent?";
+    }
   }
 
   ngOnInit(): void {
@@ -68,8 +73,8 @@ export class AgentDialogComponent implements OnInit {
         { value: this.data.agent.matricule, disabled: !this.isNewAgent },
         [Validators.required, Validators.pattern('^[A-Z0-9]+$')]
       ],
-      nom: [this.data.agent.nom, [Validators.required]],
-      prenom: [this.data.agent.prenom, [Validators.required]],
+      nom: [{value: this.data.agent.nom, disabled: this.isDeleteAgent}, [Validators.required]],
+      prenom: [{value: this.data.agent.prenom ,disabled: this.isDeleteAgent}, [Validators.required]],
       dateNaissance: [this.data.agent.dateNaissance],
       indice: [this.data.agent.indice, [Validators.min(0)]],
       salaireBase: [this.data.agent.salaireBase, [Validators.required, Validators.min(0)]],

@@ -6,10 +6,11 @@ import {AgentService} from '../agent.service';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
-import {MatAnchor, MatButton} from '@angular/material/button';
+import {MatAnchor, MatButton, MatMiniFabButton} from '@angular/material/button';
 import {MatDialog} from '@angular/material/dialog';
 import {AgentDialogComponent} from './agent-dialog/agent-dialog.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-agent',
@@ -23,14 +24,16 @@ import {MatSnackBar} from '@angular/material/snack-bar';
     MatInputModule,
     MatTableModule,
     MatButton,
-    MatAnchor
+    MatAnchor,
+    MatMiniFabButton,
+    MatIcon
   ],
   templateUrl: './agent.component.html',
   styleUrl: './agent.component.css'
 })
 export class AgentComponent implements OnInit {
   readonly dialog = inject(MatDialog);
-  displayedColumns: string[] = ['nom', 'prenom', 'matricule', 'salaireBase', 'etat'];
+  displayedColumns: string[] = ['nom', 'prenom', 'matricule', 'salaireBase', 'etat', 'action'];
   dataSource = new MatTableDataSource<Agent>([]);
   agents: Agent[] = [];
   agentTemplate: Agent = {
@@ -45,7 +48,7 @@ export class AgentComponent implements OnInit {
 
   }
 
-  openDialog(agent?: Agent): void {
+  openDialog(agent?: Agent,isDelete=false): void {
     const isNew = !agent;
     const dialogRef = this.dialog.open(AgentDialogComponent, {
       width: '700px',
@@ -61,7 +64,8 @@ export class AgentComponent implements OnInit {
           allocationFamiliale: null,
           nbrEnfant: null
         },
-        isNew: isNew
+        isNew: isNew,
+        isDelete: isDelete
       }
     });
 
@@ -71,22 +75,39 @@ export class AgentComponent implements OnInit {
           try {
             this.agentService.addAgent(result);
             this.showSnackBar('Agent ajouté avec succès');
-            this.ngOnInit();
+            this.getListAgents();
           } catch (error: any) {
             this.showSnackBar(error.message, true);
           }
-        } else {
-          // this.agentService.updateAgent(result);
-          this.showSnackBar('Agent mis à jour avec succès');
+        }else if(isDelete){
+          this.agentService.remove(result).subscribe(result => {
+            this.getListAgents();
+            this.showSnackBar("Agent supprimé avec succe")
+          });
         }
+
+        else {
+           this.agentService.updateAgent(result.matricule,result)
+             .subscribe(data =>{
+             console.log("success ", data)
+               this.showSnackBar('Agent mis à jour avec succès');
+             this.getListAgents();
+             }, error=>{
+               console.log("error ", error)
+             });
+       }
       }
     });
   }
 
   ngOnInit(): void {
-  this.agents = this.agentService.getListAgent();
-  this.dataSource.data = this.agents;
+  this.getListAgents();
 
+  }
+
+  getListAgents(): void {
+    this.agents = this.agentService.getListAgent();
+    this.dataSource.data = this.agents;
   }
 
   submitAgent(value: any) {
@@ -113,5 +134,9 @@ export class AgentComponent implements OnInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+    delete(element:Agent) {
+
   }
 }

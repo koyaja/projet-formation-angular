@@ -92,8 +92,15 @@
 
   <mat-dialog-actions align="end">
     <button mat-button type="button" (click)="onCancel()">Annuler</button>
-    <button mat-raised-button color="primary" type="submit" [disabled]="agentForm.invalid">
-      {{ isNewAgent ? 'Ajouter' : 'Enregistrer' }}
-    </button>
+    @if (isDeleteAgent){
+      <button mat-raised-button color="secondary" type="submit" [disabled]="agentForm.invalid">
+        Supprimer
+      </button>
+    } @else {
+      <button mat-raised-button color="primary" type="submit" [disabled]="agentForm.invalid">
+        {{ isNewAgent ? 'Ajouter' : 'Enregistrer' }}
+      </button>
+    }
+
   </mat-dialog-actions>
 </form>
