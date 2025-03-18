@@ -1,0 +1,74 @@
+<div class="login-container">
+  <mat-card class="login-card">
+    <div class="login-header">
+      <h2>Connexion</h2>
+      <p>Veuillez vous connecter pour accéder à votre compte</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Username</mat-label>
+        <input
+          matInput
+          formControlName="email"
+          placeholder="username"
+          type="text"
+          autocomplete="email"
+        >
+        <mat-icon matPrefix>Username</mat-icon>
+        <mat-error *ngIf="loginForm.get('email')?.invalid">
+          {{ getErrorMessage('email') }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Mot de passe</mat-label>
+        <input
+          matInput
+          formControlName="password"
+          [type]="hidePassword ? 'password' : 'text'"
+          autocomplete="current-password"
+        >
+        <mat-icon matPrefix>lock</mat-icon>
+        <button
+          mat-icon-button
+          matSuffix
+          type="button"
+          (click)="hidePassword = !hidePassword"
+          [attr.aria-label]="'Afficher le mot de passe'"
+          [attr.aria-pressed]="!hidePassword"
+        >
+          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        <mat-error *ngIf="loginForm.get('password')?.invalid">
+          {{ getErrorMessage('password') }}
+        </mat-error>
+      </mat-form-field>
+
+      <div class="remember-forgot">
+        <mat-checkbox formControlName="rememberMe" color="primary">
+          Se souvenir de moi
+        </mat-checkbox>
+        <a routerLink="/forgot-password" class="forgot-link">Mot de passe oublié ?</a>
+      </div>
+
+      <div class="action-buttons">
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          class="login-button"
+          [disabled]="loginForm.invalid || isLoading"
+        >
+          <span *ngIf="!isLoading">Se connecter</span>
+          <mat-spinner *ngIf="isLoading" diameter="24"></mat-spinner>
+        </button>
+      </div>
+    </form>
+
+    <div class="signup-link">
+      <span>Pas encore de compte ?</span>
+      <a routerLink="/register">S'inscrire</a>
+    </div>
+  </mat-card>
+</div>
