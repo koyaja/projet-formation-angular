@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
+import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import { CounterComponent } from "./counter/counter.component";
 import {AgentComponent} from './agent/agent.component';
 import {map, Observable, shareReplay} from 'rxjs';
@@ -11,6 +11,8 @@ import {MatIcon} from '@angular/material/icon';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
 import {AsyncPipe, NgIf} from '@angular/common';
 import {MatIconButton} from '@angular/material/button';
+import {AgentService} from './agent.service';
+import {AuthService, User} from './service/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -22,13 +24,16 @@ export class AppComponent {
   title = 'projet-formation';
 
   isHandset$: Observable<boolean> ;
+  currentUser: User | null;
 
-  constructor(private breakpointObserver: BreakpointObserver) {
+  constructor(private breakpointObserver: BreakpointObserver, public authService: AuthService, private router: Router) {
     this.isHandset$= this.breakpointObserver.observe(Breakpoints.Handset)
       .pipe(
         map((result: { matches: any; }) => result.matches),
         shareReplay()
       );
+    this.currentUser = this.authService.getCurrentUser();
+    console.log('current user ',this.currentUser)
   }
 
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MatCard, MatCardModule} from '@angular/material/card';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatError, MatFormField, MatLabel} from '@angular/material/form-field';
@@ -35,7 +35,7 @@ import {NgIf} from '@angular/common';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit{
   loginForm!: FormGroup;
   isLoading = false;
   hidePassword = true;
@@ -48,6 +48,9 @@ export class LoginComponent {
   ) {}
 
   ngOnInit(): void {
+   if (this.authService.isAuthenticated()) {
+     this.router.navigate(['/']);
+   }
     this.initializeForm();
   }
 

@@ -1,54 +1,62 @@
-<mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport
-               [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-               [mode]="(isHandset$ | async) ? 'over' : 'side'"
-               [opened]="(isHandset$ | async) === false">
-    <mat-toolbar>Menu</mat-toolbar>
-    <mat-nav-list>
-      <a mat-list-item routerLink="/agent" routerLinkActive="active-link">
-        <mat-icon matListItemIcon>people</mat-icon>
-        Gestion des agents
-      </a>
-      <a mat-list-item routerLink="/dashboard" routerLinkActive="active-link">
-        <mat-icon matListItemIcon>dashboard</mat-icon>
-        Tableau de bord
-      </a>
-      <a mat-list-item routerLink="/settings" routerLinkActive="active-link">
-        <mat-icon matListItemIcon>settings</mat-icon>
-        Paramètres
-      </a>
-    </mat-nav-list>
-  </mat-sidenav>
-  <mat-sidenav-content>
-    <mat-toolbar color="primary">
-      <button
-        type="button"
-        aria-label="Toggle sidenav"
-        mat-icon-button
-        (click)="drawer.toggle()"
-        *ngIf="isHandset$ | async">
-        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-      </button>
-      <span class="logo">Gestion RH</span>
-      <span class="spacer"></span>
-      <button mat-icon-button [matMenuTriggerFor]="userMenu" aria-label="User menu">
-        <mat-icon>account_circle</mat-icon>
-      </button>
-      <mat-menu #userMenu="matMenu">
-        <button mat-menu-item>
-          <mat-icon>person</mat-icon>
-          <span>Mon profil</span>
+@if (authService.isAuthenticated()){
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #drawer class="sidenav" fixedInViewport
+                 [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+                 [mode]="(isHandset$ | async) ? 'over' : 'side'"
+                 [opened]="(isHandset$ | async) === false">
+      <mat-toolbar>Menu</mat-toolbar>
+      <mat-nav-list>
+        <a mat-list-item routerLink="/agent" routerLinkActive="active-link">
+          <mat-icon matListItemIcon>people</mat-icon>
+          Gestion des agents
+        </a>
+        <a mat-list-item routerLink="/dashboard" routerLinkActive="active-link">
+          <mat-icon matListItemIcon>dashboard</mat-icon>
+          Tableau de bord
+        </a>
+        <a mat-list-item routerLink="/settings" routerLinkActive="active-link">
+          <mat-icon matListItemIcon>settings</mat-icon>
+          Paramètres
+        </a>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <mat-toolbar color="primary">
+        <button
+          type="button"
+          aria-label="Toggle sidenav"
+          mat-icon-button
+          (click)="drawer.toggle()"
+          *ngIf="isHandset$ | async">
+          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
         </button>
-        <button mat-menu-item>
-          <mat-icon>exit_to_app</mat-icon>
-          <span>Déconnexion</span>
+        <span class="logo">Gestion RH</span>
+        <span class="spacer"></span>
+        <span class="">{{currentUser?.firstName}} {{currentUser?.lastName}}</span>
+        <button mat-icon-button [matMenuTriggerFor]="userMenu" aria-label="User menu">
+          <mat-icon>account_circle</mat-icon>
         </button>
-      </mat-menu>
-    </mat-toolbar>
+        <mat-menu #userMenu="matMenu">
+          <button mat-menu-item>
+            <mat-icon>person</mat-icon>
+            <span>Mon profil</span>
+          </button>
+          <button (click)="authService.logout()" mat-menu-item>
+            <mat-icon>exit_to_app</mat-icon>
+            <span>Déconnexion</span>
+          </button>
+        </mat-menu>
+      </mat-toolbar>
 
-    <!-- Contenu principal -->
-    <div class="content-container">
-      <router-outlet></router-outlet>
-    </div>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+      <!-- Contenu principal -->
+      <div class="content-container">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+} @else {
+  <div class="content-container">
+    <router-outlet></router-outlet>
+  </div>
+}
+
